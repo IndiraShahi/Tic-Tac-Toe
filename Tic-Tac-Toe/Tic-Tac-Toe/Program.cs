@@ -10,6 +10,7 @@ namespace Tic_Tac_Toe
             char[] board = createBoard();
             showBoard(board);
             char userLetter = chooseUserLetter();
+            int userMove = getUserMove(board);
 
         }
         private static char[] createBoard()
@@ -35,5 +36,6 @@ namespace Tic_Tac_Toe
             Console.WriteLine("-----------");
             Console.WriteLine("\n" + board[7] + " | " + board[8] + " | " + board[9]);
         }
+
     }
 }
