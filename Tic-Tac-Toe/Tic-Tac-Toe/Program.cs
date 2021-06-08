@@ -7,6 +7,7 @@ namespace Tic_Tac_Toe
         public const int HEAD = 0;
         public const int TAIL = 1;
         public enum Player { USER, COMPUTER };
+        public enum GameStatus { WON, FULL_BOARD, CONTINUE };
         private static char[] createBoard()
         {
             char[] board = new char[10];
@@ -119,18 +120,62 @@ namespace Tic_Tac_Toe
             }
             return 0;
         }
+        private static GameStatus getGameStatus(char[] board, int move, char letter, String wonMessage)
+        {
+            makeMove(board, move, letter);
+            if (isWinner(board, letter))
+            {
+                showBoard(board);
+                Console.WriteLine(wonMessage);
+                return GameStatus.WON;
+            }
+            if (isBoardFull(board))
+            {
+                showBoard(board);
+                Console.WriteLine("Game is Tie");
+                return GameStatus.FULL_BOARD;
+            }
+            return GameStatus.CONTINUE;
+        }
+        private static bool isBoardFull(char[] board)
+        {
+            for (int index = 1; index < board.Length; index++)
+            {
+                if (isSpaceFree(board, index)) return false;
+            }
+            return true;
+        }
         static void Main(string[] args)
         {
             // Console.WriteLine("Let's play Tic-Tac-Toe!");
             char[] board = createBoard();
-            showBoard(board);
             char userLetter = chooseUserLetter();
-            int userMove = getUserMove(board);
-            makeMove(board, userMove, userLetter);
-            Player player = getWhoStartsFirst();
             char computerLetter = (userLetter == 'X') ? 'O' : 'X';
             Console.WriteLine("Check if Won " + isWinner(board, userLetter));
-            int computeMove = getComputerMove(board, computerLetter, userLetter);
+            
+            Player player = getWhoStartsFirst();
+            bool gameIsPlaying = true;
+            GameStatus gameStatus;
+            while (gameIsPlaying)
+            {
+                if (player.Equals(Player.USER))
+                {
+                    showBoard(board);
+                    int userMove = getUserMove(board);
+                    String wonMessage = "You have won the game!";
+                    gameStatus = getGameStatus(board, userMove, userLetter, wonMessage);
+                    player = Player.COMPUTER;
+                }
+                else
+                {
+                    String wonMessage = "The computer has beaten you!";
+                    int computeMove = getComputerMove(board, computerLetter, userLetter);
+                    gameStatus = getGameStatus(board, computeMove, computerLetter, wonMessage);
+                    player = Player.USER;
+                }
+                if (gameStatus.Equals(GameStatus.CONTINUE)) continue;
+                gameIsPlaying = false;
+            }
         }
     }
 }
