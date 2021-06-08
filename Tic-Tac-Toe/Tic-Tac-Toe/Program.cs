@@ -73,8 +73,16 @@ namespace Tic_Tac_Toe
                      (b[1] == ch && b[5] == ch && b[9] == ch) ||
                      (b[7] == ch && b[5] == ch && b[3] == ch));
         }
+        private static int getComputerMove(char[] board, char computerLetter, char userLetter)
+        {
 
-            private static int getWinningMove(char[] board, char letter)
+            int winningMove = getWinningMove(board, computerLetter);
+            if (winningMove != 0) return winningMove;
+            int userWinningMove = getWinningMove(board, userLetter);
+            if (userWinningMove != 0) return userWinningMove;
+            return 0;
+        }
+        private static int getWinningMove(char[] board, char letter)
         {
             for (int index = 1; index < board.Length; index++)
             {
@@ -108,15 +116,7 @@ namespace Tic_Tac_Toe
             Player player = getWhoStartsFirst();
             Console.WriteLine("Check if Won " + isWinner(board, userLetter));
             char computerLetter = default;
-            int computeMove = getComputerMove(board, computerLetter);
-        }
-
-        private static int getComputerMove(char[] board, char computerLetter)
-        {
-
-            int winningMove = getWinningMove(board, computerLetter);
-            if (winningMove != 0) return winningMove;
-            return 0;
+            int computeMove = getComputerMove(board, computerLetter, userLetter);
         }
     }
 }
