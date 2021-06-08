@@ -7,18 +7,6 @@ namespace Tic_Tac_Toe
         public const int HEAD = 0;
         public const int TAIL = 1;
         public enum Player { USER, COMPUTER };
-        static void Main(string[] args)
-        {
-            // Console.WriteLine("Let's play Tic-Tac-Toe!");
-            char[] board = createBoard();
-            showBoard(board);
-            char userLetter = chooseUserLetter();
-            int userMove = getUserMove(board);
-            makeMove(board, userMove, userLetter);
-            Player player = getWhoStartsFirst();
-            Console.WriteLine("Check if Won " + isWinner(board, userLetter));
-
-        }
         private static char[] createBoard()
         {
             char[] board = new char[10];
@@ -53,12 +41,14 @@ namespace Tic_Tac_Toe
                     return index;
             }
         }
+
         private static bool isSpaceFree(char[] board, int index)
         {
             return board[index] == ' ';
         }
+
         private static void makeMove(char[] board, int index, char letter)
-        { 
+        {
             Boolean spaceFree = isSpaceFree(board, index);
             if (spaceFree) board[index] = letter;
         }
@@ -82,6 +72,51 @@ namespace Tic_Tac_Toe
                      (b[3] == ch && b[6] == ch && b[9] == ch) ||
                      (b[1] == ch && b[5] == ch && b[9] == ch) ||
                      (b[7] == ch && b[5] == ch && b[3] == ch));
+        }
+
+            private static int getWinningMove(char[] board, char letter)
+        {
+            for (int index = 1; index < board.Length; index++)
+            {
+                char[] copyOfBoard = getCopyOfBoard(board);
+                if (isSpaceFree(copyOfBoard, index))
+                {
+                    makeMove(copyOfBoard, index, letter);
+                    if (isWinner(copyOfBoard, letter))
+                        return index;
+                }
+            }
+            return 0;
+
+        }
+
+        private static char[] getCopyOfBoard(char[] board )
+        {
+            char[] boardCopy = new char[10];
+            Array.Copy(board, boardCopy, board.Length);
+            return boardCopy;
+        }
+
+        static void Main(string[] args)
+        {
+            // Console.WriteLine("Let's play Tic-Tac-Toe!");
+            char[] board = createBoard();
+            showBoard(board);
+            char userLetter = chooseUserLetter();
+            int userMove = getUserMove(board);
+            makeMove(board, userMove, userLetter);
+            Player player = getWhoStartsFirst();
+            Console.WriteLine("Check if Won " + isWinner(board, userLetter));
+            char computerLetter = default;
+            int computeMove = getComputerMove(board, computerLetter);
+        }
+
+        private static int getComputerMove(char[] board, char computerLetter)
+        {
+
+            int winningMove = getWinningMove(board, computerLetter);
+            if (winningMove != 0) return winningMove;
+            return 0;
         }
     }
 }
