@@ -145,14 +145,19 @@ namespace Tic_Tac_Toe
             }
             return true;
         }
+        private static bool playAgain()
+        {
+            Console.WriteLine("Do you want to play again? (yes or no)");
+            string option = Console.ReadLine().ToLower();
+            if (option.Equals("yes")) return true;
+            return false;
+        }
         static void Main(string[] args)
         {
-            // Console.WriteLine("Let's play Tic-Tac-Toe!");
+            Console.WriteLine("Let's play Tic-Tac-Toe!");
             char[] board = createBoard();
             char userLetter = chooseUserLetter();
             char computerLetter = (userLetter == 'X') ? 'O' : 'X';
-            Console.WriteLine("Check if Won " + isWinner(board, userLetter));
-            
             Player player = getWhoStartsFirst();
             bool gameIsPlaying = true;
             GameStatus gameStatus;
