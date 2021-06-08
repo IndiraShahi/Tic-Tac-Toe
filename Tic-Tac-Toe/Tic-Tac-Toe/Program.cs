@@ -80,6 +80,9 @@ namespace Tic_Tac_Toe
             if (winningMove != 0) return winningMove;
             int userWinningMove = getWinningMove(board, userLetter);
             if (userWinningMove != 0) return userWinningMove;
+            int[] cornerMoves = { 1, 3, 7, 9 };
+            int computerMove = getRandomMoveFromList(board, cornerMoves);
+            if (computerMove != 0) return computerMove;
             return 0;
         }
         private static int getWinningMove(char[] board, char letter)
@@ -104,7 +107,14 @@ namespace Tic_Tac_Toe
             Array.Copy(board, boardCopy, board.Length);
             return boardCopy;
         }
-
+        private static int getRandomMoveFromList(char[] board, int[] moves)
+        {
+            for(int index = 0; index < moves.Length; index++)
+            {
+                if (isSpaceFree(board, moves[index])) return moves[index];
+            }
+            return 0;
+        }
         static void Main(string[] args)
         {
             // Console.WriteLine("Let's play Tic-Tac-Toe!");
