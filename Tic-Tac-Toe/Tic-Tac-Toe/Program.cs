@@ -83,6 +83,10 @@ namespace Tic_Tac_Toe
             int[] cornerMoves = { 1, 3, 7, 9 };
             int computerMove = getRandomMoveFromList(board, cornerMoves);
             if (computerMove != 0) return computerMove;
+            if (isSpaceFree(board, 5)) return 5;
+            int[] sideMoves = { 2, 4, 6, 8 };
+            computerMove = getRandomMoveFromList(board, sideMoves);
+            if (computerMove != 0) return computerMove;
             return 0;
         }
         private static int getWinningMove(char[] board, char letter)
@@ -124,8 +128,8 @@ namespace Tic_Tac_Toe
             int userMove = getUserMove(board);
             makeMove(board, userMove, userLetter);
             Player player = getWhoStartsFirst();
+            char computerLetter = (userLetter == 'X') ? 'O' : 'X';
             Console.WriteLine("Check if Won " + isWinner(board, userLetter));
-            char computerLetter = default;
             int computeMove = getComputerMove(board, computerLetter, userLetter);
         }
     }
